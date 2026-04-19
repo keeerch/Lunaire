@@ -4,13 +4,11 @@ import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.util.math.Vec3d;
 
 public class LunaireClient implements ClientModInitializer {
-    // Добавляем эти переменные, чтобы ошибки исчезли:
-    public static boolean noRenderParticles = true; // Включено по умолчанию
-    public static Vec3d activeWaypoint = null;      // Метка (пока пустая)
+    public static boolean noRenderParticles = true;
+    public static Vec3d activeWaypoint = null; // Тот самый "символ", который ищет HudRenderer
 
     @Override
     public void onInitializeClient() {
-        // Тут инициализация твоего мода
-        System.out.println("Lunaire Client Loaded!");
+        System.out.println("Lunaire Client Initialized!");
     }
 }
