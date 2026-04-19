@@ -14,7 +14,6 @@ public class LunaireClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        // Регистрация тика для открытия меню
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player != null) {
                 long window = client.getWindow().getHandle();
@@ -26,8 +25,8 @@ public class LunaireClient implements ClientModInitializer {
             }
         });
 
-        // ARMOR HUD
-        HudRenderCallback.EVENT.register((drawContext, renderTickCounter) -> {
+        // Используем float delta вместо RenderTickCounter для совместимости
+        HudRenderCallback.EVENT.register((drawContext, delta) -> {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client.player == null || !enableArmorHud) return;
 
