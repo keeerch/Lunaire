@@ -3,12 +3,7 @@
   "id": "lunaire",
   "version": "1.0.0",
   "name": "Lunaire",
-  "description": "Visuals for Minecraft",
-  "authors": ["YourName"],
-  "contact": {},
-  "license": "MIT",
-  "icon": "assets/lunaire/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "com.lunaire.mod.LunaireClient"
@@ -19,7 +14,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.15.0",
-    "minecraft": "1.21.4",
+    "minecraft": "~1.21.4",
     "java": ">=21"
   }
 }
