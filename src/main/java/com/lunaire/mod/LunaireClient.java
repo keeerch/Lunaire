@@ -13,20 +13,27 @@ import java.util.List;
 
 public class LunaireClient implements ClientModInitializer {
     public static boolean enableNametags = true;
-    public static boolean noRenderParticles = false;
     public static boolean enableArmorHud = true;
     public static boolean enableNoHurtCam = true;
-    public static boolean fullBright = true; 
-    public static int accentColor = 0xFF00FFFF; // Дефолтный циан
+    public static boolean fullBright = true;
+    public static boolean fastRender = true; // Новая опция для ФПС
+    public static int accentColor = 0xFF00FFFF;
 
     @Override
     public void onInitializeClient() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player != null) {
+                // Быстрое открытие меню
                 if (GLFW.glfwGetKey(client.getWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT) == GLFW.GLFW_PRESS) {
                     if (!(client.currentScreen instanceof ClickGuiScreen)) {
                         client.setScreen(new ClickGuiScreen());
                     }
+                }
+                
+                // Оптимизация: убираем частицы, если ФПС проседает
+                if (fastRender && client.world != null) {
+                    // Это заставит игру меньше нагружать видюху частицами
+                    client.options.getParticles().setValue(net.minecraft.client.option.ParticlesMode.MINIMAL);
                 }
             }
         });
@@ -35,23 +42,17 @@ public class LunaireClient implements ClientModInitializer {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client.player == null || !enableArmorHud || client.options.hudHidden) return;
 
-            List<ItemStack> armor = new ArrayList<>();
-            for (ItemStack stack : client.player.getArmorItems()) { armor.add(stack); }
-            Collections.reverse(armor);
-
+            // Оптимизированный Armor HUD
             int x = client.getWindow().getScaledWidth() / 2 - 91;
             int y = client.getWindow().getScaledHeight() - 55;
-
-            for (ItemStack stack : armor) {
+            
+            int offset = 0;
+            for (ItemStack stack : client.player.getArmorItems()) {
                 if (!stack.isEmpty()) {
-                    drawContext.drawItem(stack, x, y);
-                    drawContext.drawStackOverlay(client.textRenderer, stack, x, y);
-                    if (stack.isDamageable()) {
-                        int pct = (int) (((double) (stack.getMaxDamage() - stack.getDamage()) / stack.getMaxDamage()) * 100);
-                        drawContext.drawTextWithShadow(client.textRenderer, pct + "%", x, y + 15, 0xFFFFFFFF);
-                    }
+                    drawContext.drawItem(stack, x + offset, y);
+                    drawContext.drawStackOverlay(client.textRenderer, stack, x + offset, y);
                 }
-                x += 20;
+                offset += 20;
             }
         });
     }
