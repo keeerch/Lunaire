@@ -1,12 +1,11 @@
 package com.lunaire.mod;
 
+import com.lunaire.mod.gui.ClickGuiScreen;
 import net.fabricmc.api.ClientModInitializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import org.lwjgl.glfw.GLFW;
 
 public class LunaireClient implements ClientModInitializer {
-    public static final Logger LOGGER = LoggerFactory.getLogger("lunaire");
-    
     public static boolean enableNametags = true;
     public static boolean enableNoHurtCam = true;
     public static boolean fullBright = true;
@@ -14,7 +13,16 @@ public class LunaireClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        // Если ты увидишь это в консоли — значит вход выполнен!
-        LOGGER.info("!!! LUNAIRE LOADED SUCCESSFULLY !!!");
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (client.player == null) return;
+            
+            // Используем GLFW напрямую для надежности
+            long window = client.getWindow().getHandle();
+            if (org.lwjgl.glfw.GLFW.glfwGetKey(window, GLFW.GLFW_KEY_RIGHT_SHIFT) == GLFW.GLFW_PRESS) {
+                if (!(client.currentScreen instanceof ClickGuiScreen)) {
+                    client.setScreen(new ClickGuiScreen());
+                }
+            }
+        });
     }
 }
