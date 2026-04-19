@@ -4,16 +4,18 @@ import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.util.math.Vec3d;
 
 public class LunaireClient implements ClientModInitializer {
-    // Состояния функций (потом вынесем в GUI)
-    public static boolean noRenderParticles = true;
-    public static boolean fullBright = true;
-    public static boolean fastSwap = true;
-    public static float[] hitColor = {1.0f, 0.0f, 0.0f, 1.0f}; // RGBA (Красный по дефолту)
+    // Включаем визуалы по умолчанию
+    public static boolean enableVisuals = true;
+    public static boolean enableNametags = true;
+    public static boolean enableNoHurtCam = true;
     
-    public static Vec3d activeWaypoint = null;
+    // Переменные для вращения квадрата
+    public static float rotateAngle = 0.0f;
+    public static long lastTickTime = 0;
 
     @Override
     public void onInitializeClient() {
-        System.out.println("Lunaire Client: Modules Initialized!");
+        System.out.println("Lunaire Visuals Activated!");
+        lastTickTime = System.currentTimeMillis();
     }
 }
