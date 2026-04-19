@@ -16,8 +16,6 @@ public class LunaireClient implements ClientModInitializer {
     public static boolean noRenderParticles = false;
     public static boolean enableArmorHud = true;
     public static boolean enableNoHurtCam = true;
-    
-    // Акцентный цвет мода (по умолчанию бирюзовый)
     public static int accentColor = 0xFF00FFFF; 
 
     @Override
@@ -37,7 +35,7 @@ public class LunaireClient implements ClientModInitializer {
             if (client.player == null || !enableArmorHud || client.options.hudHidden) return;
 
             List<ItemStack> armor = new ArrayList<>();
-            client.player.getArmorItems().forEach(armor::add);
+            for (ItemStack stack : client.player.getArmorItems()) { armor.add(stack); }
             Collections.reverse(armor);
 
             int x = client.getWindow().getScaledWidth() / 2 - 91;
