@@ -16,24 +16,18 @@ public class LunaireClient implements ClientModInitializer {
     public static boolean enableArmorHud = true;
     public static boolean enableNoHurtCam = true;
     public static boolean fullBright = true;
-    public static boolean fastRender = true; // Новая опция для ФПС
+    // Добавил эту переменную обратно, чтобы ParticleMixin не ругался
+    public static boolean noRenderParticles = false; 
     public static int accentColor = 0xFF00FFFF;
 
     @Override
     public void onInitializeClient() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player != null) {
-                // Быстрое открытие меню
                 if (GLFW.glfwGetKey(client.getWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT) == GLFW.GLFW_PRESS) {
                     if (!(client.currentScreen instanceof ClickGuiScreen)) {
                         client.setScreen(new ClickGuiScreen());
                     }
-                }
-                
-                // Оптимизация: убираем частицы, если ФПС проседает
-                if (fastRender && client.world != null) {
-                    // Это заставит игру меньше нагружать видюху частицами
-                    client.options.getParticles().setValue(net.minecraft.client.option.ParticlesMode.MINIMAL);
                 }
             }
         });
@@ -42,7 +36,6 @@ public class LunaireClient implements ClientModInitializer {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client.player == null || !enableArmorHud || client.options.hudHidden) return;
 
-            // Оптимизированный Armor HUD
             int x = client.getWindow().getScaledWidth() / 2 - 91;
             int y = client.getWindow().getScaledHeight() - 55;
             
