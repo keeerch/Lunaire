@@ -16,7 +16,7 @@ public class LunaireClient implements ClientModInitializer {
     public static boolean noRenderParticles = false;
     public static boolean enableArmorHud = true;
     public static boolean enableNoHurtCam = true;
-    public static boolean fullBright = true; // ВОТ ЭТА СТРОКА СПАСЕТ ОТ КРЕСТА
+    public static boolean fullBright = true; // Спасёт от креста в LightmapMixin
     public static int accentColor = 0xFF00FFFF; 
 
     @Override
