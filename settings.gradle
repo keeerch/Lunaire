@@ -9,9 +9,8 @@ pluginManagement {
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
-        maven { url "https://maven.shedaniel.me/" } // ГЛАВНЫЙ СКЛАД ДЛЯ CLOTH CONFIG
+        maven { url "https://maven.shedaniel.me/" }
         maven { url "https://maven.terraformersmc.com/" }
-        maven { url "https://libraries.minecraft.net/" }
     }
 }
 
