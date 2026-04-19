@@ -3,12 +3,6 @@
   "id": "lunaire",
   "version": "1.0.0",
   "name": "Lunaire",
-  "description": "The best visual client",
-  "authors": ["YourName"],
-  "contact": {},
-  "license": "MIT",
-  "icon": "assets/lunaire/icon.png",
-  "environment": "*",
   "entrypoints": {
     "client": [
       "com.lunaire.mod.LunaireClient"
@@ -18,8 +12,8 @@
     "lunaire.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.15.0",
-    "minecraft": "~1.21.4",
+    "fabricloader": ">=0.16.0",
+    "minecraft": "1.21.4",
     "java": ">=21"
   }
 }
