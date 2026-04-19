@@ -9,11 +9,16 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
 public class LunaireClient implements ClientModInitializer {
+    // ВОТ ЭТИ ПЕРЕМЕННЫЕ НУЖНЫ ДЛЯ МИКСИНОВ:
+    public static boolean enableNametags = true;
+    public static boolean noRenderParticles = false;
     public static boolean enableArmorHud = true;
     public static boolean fullBright = true;
+    public static boolean enableNoHurtCam = true;
 
     @Override
     public void onInitializeClient() {
+        // Логика открытия GUI
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player != null) {
                 long window = client.getWindow().getHandle();
@@ -25,7 +30,7 @@ public class LunaireClient implements ClientModInitializer {
             }
         });
 
-        // Используем float delta вместо RenderTickCounter для совместимости
+        // Логика Armor HUD
         HudRenderCallback.EVENT.register((drawContext, delta) -> {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client.player == null || !enableArmorHud) return;
