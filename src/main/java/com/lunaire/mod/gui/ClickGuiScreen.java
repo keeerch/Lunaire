@@ -8,80 +8,91 @@ import net.minecraft.text.Text;
 public class ClickGuiScreen extends Screen {
     public ClickGuiScreen() { super(Text.literal("Lunaire")); }
 
-    // ЭТОТ МЕТОД УБИРАЕТ БЛЮР И ГРЯЗНЫЙ ФОН МАЙНКРАФТА
     @Override
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
-        // Оставляем пустым или заливаем легкой прозрачностью без мыла
-        context.fill(0, 0, this.width, this.height, 0x70000000); 
+        context.fill(0, 0, this.width, this.height, 0x60000000); 
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        // renderBackground вызывается автоматически, блюра больше не будет
-        
-        int w = 160, h = 130;
+        int w = 220; // Увеличил ширину
+        int h = 160; // Увеличил высоту
         int x = (this.width - w) / 2;
         int y = (this.height - h) / 2;
 
-        // Контур и тело меню (максимально резко)
-        context.fill(x - 1, y - 1, x + w + 1, y + h + 1, 0xFF000000);
-        context.fill(x, y, x + w, y + h, 0xFF0F0F0F);
+        // РИСУЕМ ЗАКРУГЛЕННОЕ МЕНЮ (Многослойная заливка для эффекта углов)
+        drawRoundedRect(context, x - 1, y - 1, x + w + 1, y + h + 1, LunaireClient.accentColor); // Внешний контур
+        drawRoundedRect(context, x, y, x + w, y + h, 0xFF0A0A0A); // Тело меню
 
-        // Шапка
-        context.fill(x, y, x + w, y + 16, LunaireClient.accentColor);
-        context.drawTextWithShadow(this.textRenderer, "LUNAIRE", x + 5, y + 4, 0xFF000000);
+        // Шапка (тоже чуть скругленная сверху)
+        context.fill(x + 2, y, x + w - 2, y + 20, LunaireClient.accentColor);
+        context.drawTextWithShadow(this.textRenderer, "LUNAIRE CLIENT", x + (w/2) - (this.textRenderer.getWidth("LUNAIRE CLIENT")/2), y + 6, 0xFF000000);
 
-        // Модули
-        drawMod(context, "Armor HUD", LunaireClient.enableArmorHud, x + 5, y + 25, mouseX, mouseY);
-        drawMod(context, "Nametags", LunaireClient.enableNametags, x + 5, y + 40, mouseX, mouseY);
-        drawMod(context, "No Hurt Cam", LunaireClient.enableNoHurtCam, x + 5, y + 55, mouseX, mouseY);
+        // Модули (Увеличил отступы и размер текста визуально)
+        drawMod(context, "ARMOR HUD", LunaireClient.enableArmorHud, x + 15, y + 35, mouseX, mouseY);
+        drawMod(context, "NAMETAGS", LunaireClient.enableNametags, x + 15, y + 55, mouseX, mouseY);
+        drawMod(context, "NO HURT CAM", LunaireClient.enableNoHurtCam, x + 15, y + 75, mouseX, mouseY);
+        drawMod(context, "FULL BRIGHT", LunaireClient.fullBright, x + 15, y + 95, mouseX, mouseY);
 
-        // Стиль (Цвета)
-        int cY = y + h - 18;
-        context.drawTextWithShadow(this.textRenderer, "STYLE:", x + 6, cY + 2, 0xFF777777);
-
-        drawClr(context, x + 45, cY, 0xFF00FFFF);  // Cyan
-        drawClr(context, x + 63, cY, 0xFFFF00FF);  // Pink
-        drawClr(context, x + 81, cY, 0xFF00FF00);  // Green
-        drawClr(context, x + 99, cY, 0xFFFF0000);  // Red
-        drawClr(context, x + 117, cY, 0xFFFFFFFF); // White
-        drawClr(context, x + 135, cY, 0xFFFFFF00); // Yellow
+        // Выбор цвета (стиль)
+        int cY = y + h - 25;
+        context.drawTextWithShadow(this.textRenderer, "ACCENT COLOR:", x + 15, cY + 2, 0xFF999999);
+        
+        int[] clrs = {0xFF00FFFF, 0xFFFF00FF, 0xFF00FF00, 0xFFFF0000, 0xFFFFFFFF, 0xFFFFFF00};
+        for (int i = 0; i < clrs.length; i++) {
+            drawClr(context, x + 105 + (i * 18), cY, clrs[i]);
+        }
 
         super.render(context, mouseX, mouseY, delta);
     }
 
+    // МЕТОД ДЛЯ ЗАКРУГЛЕННЫХ УГЛОВ (БЕЗ МЫЛА)
+    private void drawRoundedRect(DrawContext context, int x1, int y1, int x2, int y2, int color) {
+        context.fill(x1 + 2, y1, x2 - 2, y2, color); // Основное тело
+        context.fill(x1, y1 + 2, x1 + 2, y2 - 2, color); // Левый бок
+        context.fill(x2 - 2, y1 + 2, x2, y2 - 2, color); // Правый бок
+        // Пиксели на углах для мягкости
+        context.fill(x1 + 1, y1 + 1, x1 + 2, y1 + 2, color);
+        context.fill(x2 - 2, y1 + 1, x2 - 1, y1 + 2, color);
+        context.fill(x1 + 1, y2 - 2, x1 + 2, y2 - 1, color);
+        context.fill(x2 - 2, y2 - 2, x2 - 1, y2 - 1, color);
+    }
+
     private void drawMod(DrawContext context, String n, boolean o, int x, int y, int mx, int my) {
-        int c = o ? LunaireClient.accentColor : 0xFF555555;
-        if (mx >= x && mx <= x + 150 && my >= y && my <= y + 10) {
-            context.fill(x, y, x + 150, y + 10, 0x20FFFFFF);
+        int c = o ? LunaireClient.accentColor : 0xFF666666;
+        if (mx >= x && mx <= x + 190 && my >= y && my <= y + 12) {
+            context.fill(x - 5, y - 2, x + 195, y + 12, 0x15FFFFFF);
         }
-        context.drawTextWithShadow(this.textRenderer, (o ? "> " : "  ") + n, x, y, c);
+        context.drawTextWithShadow(this.textRenderer, n, x + 10, y, c);
+        context.drawTextWithShadow(this.textRenderer, o ? "[ON]" : "[OFF]", x + 160, y, c);
     }
 
     private void drawClr(DrawContext context, int x, int y, int c) {
-        context.fill(x - 1, y - 1, x + 11, y + 11, 0xFF000000);
-        context.fill(x, y, x + 10, y + 10, c);
+        context.fill(x - 1, y - 1, x + 12, y + 12, 0xFF000000);
+        context.fill(x, y, x + 11, y + 11, c);
         if (LunaireClient.accentColor == c) {
-            context.fill(x + 3, y + 3, x + 7, y + 7, 0xFF000000);
+            context.fill(x + 4, y + 4, x + 7, y + 7, 0xFF000000);
         }
     }
 
     @Override
     public boolean mouseClicked(double mx, double my, int b) {
-        int x = (this.width - 160) / 2, y = (this.height - 130) / 2;
-        if (mx >= x + 5 && mx <= x + 155) {
-            if (my >= y + 25 && my <= y + 35) LunaireClient.enableArmorHud = !LunaireClient.enableArmorHud;
-            if (my >= y + 40 && my <= y + 50) LunaireClient.enableNametags = !LunaireClient.enableNametags;
-            if (my >= y + 55 && my <= y + 65) LunaireClient.enableNoHurtCam = !LunaireClient.enableNoHurtCam;
+        int w = 220, h = 160;
+        int x = (this.width - w) / 2, y = (this.height - h) / 2;
+
+        if (mx >= x + 15 && mx <= x + 205) {
+            if (my >= y + 35 && my <= y + 47) LunaireClient.enableArmorHud = !LunaireClient.enableArmorHud;
+            if (my >= y + 55 && my <= y + 67) LunaireClient.enableNametags = !LunaireClient.enableNametags;
+            if (my >= y + 75 && my <= y + 87) LunaireClient.enableNoHurtCam = !LunaireClient.enableNoHurtCam;
+            if (my >= y + 95 && my <= y + 107) LunaireClient.fullBright = !LunaireClient.fullBright;
         }
-        int cY = y + 130 - 18;
-        if (my >= cY && my <= cY + 10) {
-            if (mx >= x + 45 && mx <= x + 55) LunaireClient.accentColor = 0xFF00FFFF;
-            if (mx >= x + 63 && mx <= x + 73) LunaireClient.accentColor = 0xFFFF00FF;
-            if (mx >= x + 81 && mx <= x + 91) LunaireClient.accentColor = 0xFF00FF00;
-            if (mx >= x + 99 && mx <= x + 109) LunaireClient.accentColor = 0xFFFF0000;
-            if (mx >= x + 117 && mx <= x + 127) LunaireClient.accentColor = 0xFFFFFFFF;
-            if (mx >= x + 135 && mx <= x + 145) LunaireClient.accentColor = 0xFFFFFF00;
+
+        int cY = y + h - 25;
+        if (my >= cY && my <= cY + 11) {
+            int[] clrs = {0xFF00FFFF, 0xFFFF00FF, 0xFF00FF00, 0xFFFF0000, 0xFFFFFFFF, 0xFFFFFF00};
+            for (int i = 0; i < clrs.length; i++) {
+                if (mx >= x + 105 + (i * 18) && mx <= x + 105 + (i * 18) + 11) LunaireClient.accentColor = clrs[i];
+            }
         }
         return super.mouseClicked(mx, my, b);
     }
