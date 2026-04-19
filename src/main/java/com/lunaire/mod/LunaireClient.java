@@ -16,6 +16,7 @@ public class LunaireClient implements ClientModInitializer {
     public static boolean noRenderParticles = false;
     public static boolean enableArmorHud = true;
     public static boolean enableNoHurtCam = true;
+    public static boolean fullBright = true; // ВОТ ЭТА СТРОКА СПАСЕТ ОТ КРЕСТА
     public static int accentColor = 0xFF00FFFF; 
 
     @Override
@@ -44,7 +45,6 @@ public class LunaireClient implements ClientModInitializer {
             for (ItemStack stack : armor) {
                 if (!stack.isEmpty()) {
                     drawContext.drawItem(stack, x, y);
-                    // В 1.21.4 используется drawItemInSlot или drawStackOverlay
                     drawContext.drawStackOverlay(client.textRenderer, stack, x, y);
                     if (stack.isDamageable()) {
                         int pct = (int) (((double) (stack.getMaxDamage() - stack.getDamage()) / stack.getMaxDamage()) * 100);
