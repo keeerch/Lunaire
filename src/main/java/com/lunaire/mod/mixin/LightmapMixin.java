@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LightmapTextureManager.class)
 public class LightmapMixin {
-    @Inject(method = "getBrightness", at = @At("RETURN"), cancellable = true)
-    private void onGetBrightness(CallbackInfoReturnable<Float> cir) {
+    @Inject(method = "getBrightness", at = @At("HEAD"), cancellable = true)
+    private static void onGetBrightness(CallbackInfoReturnable<Float> cir) {
         if (LunaireClient.fullBright) {
-            cir.setReturnValue(15.0f);
+            cir.setReturnValue(15.0f); // Максимальная яркость без лагов освещения
         }
     }
 }
