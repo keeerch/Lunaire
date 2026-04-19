@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class GameRendererMixin {
     @Inject(method = "bobView", at = @At("HEAD"), cancellable = true)
     private void onBobView(CallbackInfo ci) {
-        // Если NoHurtCam включен, просто отменяем стандартную тряску камеры
         if (LunaireClient.enableNoHurtCam) {
             ci.cancel();
         }
