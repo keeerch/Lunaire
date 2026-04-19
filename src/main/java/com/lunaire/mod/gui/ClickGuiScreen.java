@@ -29,9 +29,9 @@ public class ClickGuiScreen extends Screen {
         int cY = y + h - 18;
         context.drawTextWithShadow(this.textRenderer, "STYLE:", x + 6, cY + 2, 0xFF777777);
         
-        // Отрисовка цветов без мыла (расстояние увеличено для четкости)
+        // Отрисовка цветов без мыла
         int[] colors = {0xFF00FFFF, 0xFFFF00FF, 0xFF00FF00, 0xFFFF0000, 0xFFFFFFFF, 0xFFFFFF00};
-        for (int i = 0; i < colors.size(); i++) {
+        for (int i = 0; i < colors.length; i++) {
             drawClr(context, x + 45 + (i * 18), cY, colors[i]);
         }
         super.render(context, mouseX, mouseY, delta);
@@ -44,12 +44,10 @@ public class ClickGuiScreen extends Screen {
     }
 
     private void drawClr(DrawContext context, int x, int y, int c) {
-        // Жесткая черная рамка вокруг каждого квадрата (фикс мыла)
-        context.fill(x - 1, y - 1, x + 11, y + 11, 0xFF000000);
+        context.fill(x - 1, y - 1, x + 11, y + 11, 0xFF000000); // Резкий контур
         context.fill(x, y, x + 10, y + 10, c);
-        // Точка выбора внутри
         if (LunaireClient.accentColor == c) {
-            context.fill(x + 3, y + 3, x + 7, y + 7, 0xFF000000);
+            context.fill(x + 3, y + 3, x + 7, y + 7, 0xFF000000); // Точка выбора
         }
     }
 
@@ -64,7 +62,7 @@ public class ClickGuiScreen extends Screen {
         int cY = y + 130 - 18;
         if (my >= cY && my <= cY + 10) {
             int[] clrs = {0xFF00FFFF, 0xFFFF00FF, 0xFF00FF00, 0xFFFF0000, 0xFFFFFFFF, 0xFFFFFF00};
-            for (int i = 0; i < clrs.size(); i++) {
+            for (int i = 0; i < clrs.length; i++) {
                 if (mx >= x + 45 + (i * 18) && mx <= x + 45 + (i * 18) + 10) LunaireClient.accentColor = clrs[i];
             }
         }
