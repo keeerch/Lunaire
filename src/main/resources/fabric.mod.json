@@ -3,7 +3,12 @@
   "id": "lunaire",
   "version": "1.0.0",
   "name": "Lunaire",
-  "environment": "client",
+  "description": "The best visual client",
+  "authors": ["YourName"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/lunaire/icon.png",
+  "environment": "*",
   "entrypoints": {
     "client": [
       "com.lunaire.mod.LunaireClient"
