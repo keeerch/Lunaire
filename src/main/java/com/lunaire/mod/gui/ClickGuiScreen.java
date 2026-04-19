@@ -6,34 +6,70 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
 public class ClickGuiScreen extends Screen {
-    public ClickGuiScreen() {
-        super(Text.literal("Lunaire Menu"));
-    }
+    public ClickGuiScreen() { super(Text.literal("Lunaire")); }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        // Полупрозрачный фон
-        context.fill(0, 0, this.width, this.height, 0x80000000);
+        // Затемнение фона
+        context.fill(0, 0, this.width, this.height, 0x90000000);
+
+        int w = 180; // Ширина меню
+        int h = 120; // Высота меню
+        int x = (this.width - w) / 2;
+        int y = (this.height - h) / 2;
+
+        // Рисуем закругленный прямоугольник (основное тело)
+        // 1. Центральная часть
+        context.fill(x + 2, y, x + w - 2, y + h, 0xFF121212);
+        // 2. Боковые части
+        context.fill(x, y + 2, x + 2, y + h - 2, 0xFF121212);
+        context.fill(x + w - 2, y + 2, x + w, y + h - 2, 0xFF121212);
         
-        int x = this.width / 2 - 50;
-        drawButton(context, "FullBright", LunaireClient.fullBright, x, 50);
-        drawButton(context, "Armor HUD", LunaireClient.enableArmorHud, x, 80);
-        
+        // Тонкая рамка сверху (акцентный цвет)
+        context.fill(x + 5, y + 2, x + w - 5, y + 3, LunaireClient.accentColor);
+
+        // Заголовок
+        context.drawCenteredTextWithShadow(this.textRenderer, "LUNAIRE CLIENT", this.width / 2, y + 10, LunaireClient.accentColor);
+
+        // Кнопки модулей
+        drawMod(context, "Armor HUD", LunaireClient.enableArmorHud, x + 10, y + 35, mouseX, mouseY);
+        drawMod(context, "Nametags", LunaireClient.enableNametags, x + 10, y + 55, mouseX, mouseY);
+        drawMod(context, "No Hurt Cam", LunaireClient.enableNoHurtCam, x + 10, y + 75, mouseX, mouseY);
+
+        // Смена цвета (внизу меню)
+        context.drawTextWithShadow(this.textRenderer, "CHANGE COLOR:", x + 10, y + 100, 0xFFFFFFFF);
+        context.fill(x + 100, y + 98, x + 115, y + 110, 0xFF00FFFF); // Циан
+        context.fill(x + 120, y + 98, x + 135, y + 110, 0xFFFF00FF); // Маджента
+        context.fill(x + 140, y + 98, x + 155, y + 110, 0xFF00FF00); // Зеленый
+
         super.render(context, mouseX, mouseY, delta);
     }
 
-    private void drawButton(DrawContext context, String name, boolean state, int x, int y) {
-        int color = state ? 0xFF00FF00 : 0xFFFF0000;
-        context.drawTextWithShadow(this.textRenderer, name + ": " + (state ? "ON" : "OFF"), x, y, color);
+    private void drawMod(DrawContext context, String name, boolean on, int x, int y, int mx, int my) {
+        int color = on ? LunaireClient.accentColor : 0xFF555555;
+        context.drawTextWithShadow(this.textRenderer, (on ? "[X] " : "[ ] ") + name, x, y, color);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        int x = this.width / 2 - 50;
-        if (mouseX >= x && mouseX <= x + 100) {
-            if (mouseY >= 50 && mouseY <= 65) LunaireClient.fullBright = !LunaireClient.fullBright;
-            if (mouseY >= 80 && mouseY <= 95) LunaireClient.enableArmorHud = !LunaireClient.enableArmorHud;
+        int w = 180; int h = 120;
+        int x = (this.width - w) / 2;
+        int y = (this.height - h) / 2;
+
+        // Клики по модулям
+        if (mouseX >= x + 10 && mouseX <= x + 150) {
+            if (mouseY >= y + 35 && mouseY <= y + 45) LunaireClient.enableArmorHud = !LunaireClient.enableArmorHud;
+            if (mouseY >= y + 55 && mouseY <= y + 65) LunaireClient.enableNametags = !LunaireClient.enableNametags;
+            if (mouseY >= y + 75 && mouseY <= y + 85) LunaireClient.enableNoHurtCam = !LunaireClient.enableNoHurtCam;
         }
+
+        // Клики по цветам
+        if (mouseY >= y + 98 && mouseY <= y + 110) {
+            if (mouseX >= x + 100 && mouseX <= x + 115) LunaireClient.accentColor = 0xFF00FFFF;
+            if (mouseX >= x + 120 && mouseX <= x + 135) LunaireClient.accentColor = 0xFFFF00FF;
+            if (mouseX >= x + 140 && mouseX <= x + 155) LunaireClient.accentColor = 0xFF00FF00;
+        }
+
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
