@@ -1,26 +1,20 @@
 package com.lunaire.mod;
 
-import com.lunaire.mod.gui.ClickGuiScreen;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.util.InputUtil;
-import org.lwjgl.glfw.GLFW;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LunaireClient implements ClientModInitializer {
+    public static final Logger LOGGER = LoggerFactory.getLogger("lunaire");
+    
     public static boolean enableNametags = true;
     public static boolean enableNoHurtCam = true;
     public static boolean fullBright = true;
-    public static boolean noRenderParticles = true;
+    public static boolean noRenderParticles = false;
 
     @Override
     public void onInitializeClient() {
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            // Проверяем нажатие Правого Шифта (GLFW_KEY_RIGHT_SHIFT)
-            if (client.player != null && InputUtil.isKeyPressed(client.getWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT)) {
-                if (!(client.currentScreen instanceof ClickGuiScreen)) {
-                    client.setScreen(new ClickGuiScreen());
-                }
-            }
-        });
+        // Если ты увидишь это в консоли — значит вход выполнен!
+        LOGGER.info("!!! LUNAIRE LOADED SUCCESSFULLY !!!");
     }
 }
