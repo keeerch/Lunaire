@@ -1,20 +1,24 @@
-name: Lunaire Final Build
+name: Lunaire 1.21.4 Build
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # МЫ УБРАЛИ ENV БЛОК, так как GitHub теперь сам справляется
+    
+    # ВОТ ОНО — РЕШЕНИЕ:
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4 # Скоро выйдет v5, следи за обновлениями
+        uses: actions/checkout@v4
 
       - name: Setup Java 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: 'gradle' # Добавляем кэш, чтобы билд шел быстрее
+          cache: 'gradle'
 
       - name: Build Mod
         run: |
