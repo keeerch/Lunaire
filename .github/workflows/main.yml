@@ -1,4 +1,4 @@
-name: Lunaire Build Fix
+name: Lunaire Final Build
 on: [push]
 
 jobs:
@@ -7,7 +7,7 @@ jobs:
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Java
@@ -16,19 +16,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build Mod
+      - name: Build
         run: |
-          # Пытаемся найти папку, где лежит проект
-          if [ -f "build.gradle" ]; then
-            PROJECT_DIR="."
-          elif [ -f "Lunaire/build.gradle" ]; then
-            PROJECT_DIR="Lunaire"
-          else
-            echo "ОШИБКА: Файл build.gradle не найден ни в корне, ни в папке Lunaire!"
-            exit 1
-          fi
-          
-          echo "Проект найден в: $PROJECT_DIR"
-          cd $PROJECT_DIR
           chmod +x gradlew
           ./gradlew build --no-daemon
