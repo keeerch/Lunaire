@@ -2,7 +2,6 @@ package com.lunaire.mod.gui;
 
 import com.lunaire.mod.LunaireClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.RenderTickCounter;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
@@ -12,7 +11,7 @@ public class ClickGuiScreen extends Screen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, RenderTickCounter tickCounter) {
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         // Полупрозрачный фон
         context.fill(0, 0, this.width, this.height, 0x80000000);
         
@@ -20,7 +19,7 @@ public class ClickGuiScreen extends Screen {
         drawButton(context, "FullBright", LunaireClient.fullBright, x, 50);
         drawButton(context, "Armor HUD", LunaireClient.enableArmorHud, x, 80);
         
-        super.render(context, mouseX, mouseY, tickCounter);
+        super.render(context, mouseX, mouseY, delta);
     }
 
     private void drawButton(DrawContext context, String name, boolean state, int x, int y) {
