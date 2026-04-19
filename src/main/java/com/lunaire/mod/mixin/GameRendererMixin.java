@@ -8,12 +8,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(GameRenderer.class)
+@Mixin(value = GameRenderer.class, priority = 1001) // Приоритет выше, чтобы перебить другие моды
 public class GameRendererMixin {
     @Inject(method = "tiltViewWhenHurt", at = @At("HEAD"), cancellable = true)
     private void onTiltViewWhenHurt(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
         if (LunaireClient.enableNoHurtCam) {
-            ci.cancel(); // Просто отменяем тряску
+            ci.cancel(); 
         }
     }
 }
