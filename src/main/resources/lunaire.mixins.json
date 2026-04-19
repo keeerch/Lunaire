@@ -4,10 +4,7 @@
   "package": "com.lunaire.mod.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "ParticleMixin",
-    "LightmapMixin",
-    "EntityRendererMixin",
-    "GameRendererMixin"
+    "LightmapMixin"
   ],
   "injectors": {
     "defaultRequire": 1
