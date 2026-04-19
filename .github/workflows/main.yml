@@ -1,10 +1,9 @@
-name: Lunaire 1.21.4 Build
+name: Lunaire Final Build
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
@@ -23,3 +22,10 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew clean build --no-daemon
+
+      # ВОТ ЭТОТ БЛОК НУЖЕН, ЧТОБЫ ПОЯВИЛАСЬ КНОПКА СКАЧАТЬ
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lunaire-Mod-Jar
+          path: build/libs/*.jar
