@@ -12,7 +12,7 @@ public class LightmapMixin {
     @Inject(method = "getBrightness", at = @At("HEAD"), cancellable = true)
     private static void onGetBrightness(CallbackInfoReturnable<Float> cir) {
         if (LunaireClient.fullBright) {
-            cir.setReturnValue(15.0f);
+            cir.setReturnValue(15.0f); // Ставим свет на максимум
         }
     }
 }
