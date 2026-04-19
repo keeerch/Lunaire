@@ -26,14 +26,13 @@ public class LunaireClient implements ClientModInitializer {
             }
         });
 
-        // ВОЗВРАЩАЕМ АРМОР ХУД С ПРОЦЕНТАМИ
         HudRenderCallback.EVENT.register((drawContext, delta) -> {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client.player == null || !enableArmorHud || client.options.hudHidden) return;
 
-            // Позиция над сердечками
             int x = client.getWindow().getScaledWidth() / 2 - 91;
-            int y = client.getWindow().getScaledHeight() - 55;
+            // БЫЛО -55, СТАЛО -80 (ТЕПЕРЬ ВЫШЕ НАД ИНВЕНТАРЕМ/БРОНЕЙ)
+            int y = client.getWindow().getScaledHeight() - 80; 
             
             int i = 0;
             for (ItemStack stack : client.player.getArmorItems()) {
@@ -42,13 +41,9 @@ public class LunaireClient implements ClientModInitializer {
                     drawContext.drawItem(stack, ox, y);
                     drawContext.drawStackOverlay(client.textRenderer, stack, ox, y);
                     
-                    // Расчет процентов прочности
                     if (stack.isDamageable()) {
                         int pct = (int) (((stack.getMaxDamage() - stack.getDamage()) / (float) stack.getMaxDamage()) * 100);
-                        String pctStr = pct + "%";
-                        int tw = client.textRenderer.getWidth(pctStr);
-                        // Рисуем проценты мелким текстом под броней
-                        drawContext.drawTextWithShadow(client.textRenderer, pctStr, ox + 10 - (tw/2), y + 15, 0xFFFFFFFF);
+                        drawContext.drawTextWithShadow(client.textRenderer, pct + "%", ox + 2, y + 18, 0xFFFFFFFF);
                     }
                 }
                 i++;
