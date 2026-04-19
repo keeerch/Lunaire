@@ -3,11 +3,7 @@
   "minVersion": "0.8",
   "package": "com.lunaire.mod.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "LightmapMixin",
-    "EntityRendererMixin",
-    "GameRendererMixin"
-  ],
+  "mixins": [],
   "injectors": {
     "defaultRequire": 1
   }
